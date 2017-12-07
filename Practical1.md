@@ -1,4 +1,4 @@
-GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/resops_workshop 
+GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/resops_taster
 
 # Practical 1
 ## Deploying a virtual machine with Terraform
