@@ -7,13 +7,13 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 
 2. Your environment has been set up so that Terraform and Ansible are already installed. Test this by running `terraform -v’ and ‘ansible --version`. If you get ‘command not found’ for either of these, contact your friendly course guides for help before continuing.
 
-3. Create a folder called ‘practical1’ (‘mkdir practical1’) and cd into it.
+3. Create a folder called ‘practical1’ (`mkdir practical1`) and cd into it.
 
-4. We’ll create a basic terraform file that boots a single server and allows us to SSH in. Create a file called ‘instance.tf’ and open it in your favorite editor. (You may need to install it, e.g. ‘sudo yum install vim/nano/emacs’)
+4. We’ll create a basic terraform file that boots a single server and allows us to SSH in. Create a file called ‘instance.tf’ and open it in your favorite editor. (You may need to install it, e.g. `sudo yum install vim/nano/emacs`)
 
 5. We’ll define the Google provider first with some basic front matter:
 
-```
+```HCL
 provider "google" {
   credentials = "${file("resops.json")}"
   project = "resops-taster"
@@ -22,7 +22,7 @@ provider "google" {
 
 ```
 6. Next we'll define our basic vm instance:
-```
+```HCL
 resource "google_compute_instance" "default" {
   # Change this to something fun!
   name         = "testmachine"
@@ -57,7 +57,7 @@ resource "google_compute_instance" "default" {
 
 12. The new machine is refusing our connection because of its default firewall. So we’ll need to create a new rule and assign it. Open your instance.tf file, and add the following at the top: 
 
-```
+```HCL
 # Create a security group
 resource "openstack_compute_secgroup_v2" "demo_secgroup" {
   # Again, remember to change this
@@ -74,8 +74,9 @@ resource "openstack_compute_secgroup_v2" "demo_secgroup" {
 ```
 
 Next go into the machine definition and add 
-
+```
 security_groups = ["${openstack_compute_secgroup_v2.demo_secgroup.name}"]
+```
 
 Right below the key_pair entry we added in the previous step. Save and exit.
 
@@ -85,7 +86,7 @@ Right below the key_pair entry we added in the previous step. Save and exit.
 
 15. To make our terraform setup easily customizable, we can use variables to change things on a per-deployment basis. Open the instance.tf file and change the ‘name’ line of your VM instance to be as follows: 
 
-```
+```HCL
 name = "${var.name}_machine"
 
 Then, at the end of your file, add the definition of this variable:
