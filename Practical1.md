@@ -11,17 +11,43 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 
 4. We’ll create a basic terraform file that boots a single server and allows us to SSH in. Create a file called ‘instance.tf’ and open it in your favorite editor. (You may need to install it, e.g. ‘sudo yum install vim/nano/emacs’)
 
-5. We’ll define a very basic VM first. Put the following contents in the file:
+5. We’ll define the Google provider first with some basic front matter:
 
 ```
-# Create a web server
-resource "openstack_compute_instance_v2" "basic" {
-  # Change this to something better!
-  name            = "sometest_machine"
-  # This is the id of a pre baked image in openstack
-  image_id        = "3e8781ee-acfd-4f10-9884-5471378792e7"
-  # This determines the size of the VM
-  flavor_name     = "s1.tiny"
+provider "google" {
+  credentials = "${file("resops.json")}"
+  project = "resops-taster"
+  region = "europe-west1-b"
+}
+
+```
+6. Next we'll define our basic vm instance:
+```
+resource "google_compute_instance" "default" {
+  # Change this to something fun!
+  name         = "testmachine"
+  
+  machine_type = "n1-standard-1"
+  zone         = "europe-west1-b"
+
+  boot_disk {
+    initialize_params {
+      # We use centos here, but this could be Ubuntu, CoreOS or anything really
+      image = "projects/centos-cloud/global/images/centos-7-v20171129"
+    }
+  }
+
+  scratch_disk {
+  }
+
+  network_interface {
+    # We need to define a subnetwork, so we use the default of the project
+    subnetwork = "projects/resops-taster/regions/europe-west1/subnetworks/default"
+    access_config {
+      # We leave the external ip empty, so it will get auto-assigned
+      nat_ip = ""
+    }
+  }  
 }
 ```
 
