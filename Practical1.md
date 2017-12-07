@@ -74,7 +74,7 @@ resource "openstack_compute_secgroup_v2" "demo_secgroup" {
 ```
 
 Next go into the machine definition and add 
-```
+```HCL
 security_groups = ["${openstack_compute_secgroup_v2.demo_secgroup.name}"]
 ```
 
@@ -88,9 +88,11 @@ Right below the key_pair entry we added in the previous step. Save and exit.
 
 ```HCL
 name = "${var.name}_machine"
+```
 
 Then, at the end of your file, add the definition of this variable:
 
+```HCL
 variable "name" {
   type = "string"
 }
