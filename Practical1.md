@@ -29,6 +29,8 @@ resource "google_compute_instance" "default" {
   
   machine_type = "n1-standard-1"
   zone         = "europe-west1-b"
+  # This bit will fail! Change the tag because we need it to be unique later on. Only dashes and alphanumerics are allowed.
+  tags         = ["change_this"]
 
   boot_disk {
     initialize_params {
