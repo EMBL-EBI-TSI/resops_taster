@@ -5,7 +5,7 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 
 1. Log into your instance using the guide here: 
 
-2. Your environment has been set up so that Terraform and Ansible are already installed. Test this by running `terraform -v’ and ‘ansible --version`. If you get ‘command not found’ for either of these, contact your friendly course guides for help before continuing.
+2. Your environment has been set up so that Terraform is already installed. Test this by running `terraform -v`. If you get ‘command not found’ for either of these, contact your friendly course guides for help before continuing.
 
 3. Create a folder called ‘practical1’ (`mkdir practical1`) and cd into it.
 
@@ -24,19 +24,20 @@ provider "google" {
 6. Next we'll define our basic vm instance:
 ```HCL
 resource "google_compute_instance" "default" {
-  # Change this to something fun!
+  # Change this to something more interesting
   name         = "testmachine"
   
-  machine_type = "n1-standard-1"
+  machine_type = "g1-small"
   zone         = "europe-west1-b"
 
   boot_disk {
     initialize_params {
-      # We use centos here, but this could be Ubuntu, CoreOS or anything really
+      # We use Centos here, but this could be Ubuntu, CoreOS or anything really
       image = "projects/centos-cloud/global/images/centos-7-v20171129"
     }
   }
 
+  # We can leave this empty to get a 10GB SSD disk, which suits our needs today
   scratch_disk {
   }
 
@@ -51,40 +52,13 @@ resource "google_compute_instance" "default" {
 }
 ```
 
-9. Save the file and exit. Then run ‘terraform apply’. Some basic output will scroll by and finally your machine will have been created. Login to the Google Cloud Console (console.cloud.google.com) to see for yourself; Click the 'hamburger' menu top left -> Compute Engine -> VM instances.
+7. Save the file and exit. Then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created. Login to the Google Cloud Console (console.cloud.google.com) to see for yourself; Click the 'hamburger' menu top left -> Compute Engine -> VM instances.
 
-11. So now we can connect to it with ssh. Find the ip of your new machine using ‘terraform show’ and find the value for ‘network.0.fixed_ip_v4’. Then ssh to it with your key: ‘ssh xx.xx.xx.xx’. Are you able to connect?
+8. So now we can connect to it with ssh. Find the ip of your new machine using ‘terraform show’ and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
 
-12. The new machine is refusing our connection because of its default firewall. So we’ll need to create a new rule and assign it. Open your instance.tf file, and add the following at the top: 
+9. You should now be in your new machine, try and install for example an nginx server with ‘sudo yum install epel-release && sudo yum install nginx’ (optional). Exit to your deployment vm (after you are done playing around) by typing ‘exit’ or pressing Ctrl-D.
 
-```HCL
-# Create a security group
-resource "openstack_compute_secgroup_v2" "demo_secgroup" {
-  # Again, remember to change this
-  name = "somename_secgroup"
-  description = "basic demo secgroup"
-
-  rule {
-    from_port = 22
-    to_port = 22
-    ip_protocol = "tcp"
-    cidr = "0.0.0.0/0"
-  }
-}
-```
-
-Next go into the machine definition and add 
-```HCL
-security_groups = ["${openstack_compute_secgroup_v2.demo_secgroup.name}"]
-```
-
-Right below the key_pair entry we added in the previous step. Save and exit.
-
-13. With your new file, run terraform apply again. You will see a new security group being created and your machine will be modified to include the new security group. Try to ssh in again. Is it working?
-
-14. You should now be in your new machine, try and install for example an nginx server with ‘sudo yum install epel-release && sudo yum install nginx’ (optional). Exit to your deployment vm (after you are done playing around) by typing ‘exit’ or pressing Ctrl-D.
-
-15. To make our terraform setup easily customizable, we can use variables to change things on a per-deployment basis. Open the instance.tf file and change the ‘name’ line of your VM instance to be as follows: 
+10. To make our terraform setup easily customizable, we can use variables to change things on a per-deployment basis. Open the instance.tf file and change the ‘name’ line of your VM instance to be as follows: 
 
 ```HCL
 name = "${var.name}_machine"
@@ -98,9 +72,9 @@ variable "name" {
 }
 ```
 
-Save and exit, and run ‘terraform apply’. You will be asked to enter a name, and your machine will be modified to include the new name. You can use variables for all sorts of things that would need to be changed on a per-deployment basis, such as ip-addresses, passwords, file inputs, etc. We can use it anywhere we want to, so we could use it to name the security group and keypair too in our example. Try using the ‘name’ variable to name these two resources by editing your instance.tf file and redeploy your infrastructure. Did it work? (check the Horizon interface!)
+Save and exit, and run ‘terraform apply’. You will be asked to enter a name, and your machine will be modified to include the new name. You can use variables for all sorts of things that would need to be changed on a per-deployment basis, such as ip-addresses, passwords, file inputs, etc. 
 
-16. Lastly, we need to tear down our infrastructure again. Run ‘terraform destroy’
+11. Lastly, we need to tear down our infrastructure again. Run ‘terraform destroy’
 Type ‘yes’ to confirm. Terraform will now destroy your VM. Please don’t leave your machine running, so we can save resources as much as possible.
 
 This concludes the first practical.
