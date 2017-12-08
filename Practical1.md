@@ -27,7 +27,7 @@ resource "google_compute_instance" "default" {
   # Change this to something more interesting
   name         = "testmachine"
   
-  machine_type = "g1-small"
+  machine_type = "n1-standard-1"
   zone         = "europe-west1-b"
 
   boot_disk {
@@ -52,7 +52,7 @@ resource "google_compute_instance" "default" {
 }
 ```
 
-7. Save the file and exit. Then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created. Login to the Google Cloud Console (console.cloud.google.com) to see for yourself; Click the 'hamburger' menu top left -> Compute Engine -> VM instances.
+7. Save the file and exit. Then run `terraform init` to initalize the Google Cloud plugin for terraform, then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created. Login to the Google Cloud Console (console.cloud.google.com) to see for yourself; Click the 'hamburger' menu top left -> Compute Engine -> VM instances.
 
 8. So now we can connect to it with ssh. Find the ip of your new machine using ‘terraform show’ and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
 
