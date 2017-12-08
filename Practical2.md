@@ -11,12 +11,20 @@
 ```yaml
 ---
 # Define the name of the host we want to configure
-hosts: webserver
-tasks:
-  - name: Install nginx
-    package:
-      name: nginx
-      state: latest
+- hosts: webserver
+# Become means we will become root, we need this to install packages
+  become: yes
+  tasks:
+    - name: Install nginx
+      package:
+        name: nginx
+        state: latest
+    - name: Start nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
 ```
 We use the 'package' module to install nginx. There are many other modules, such as 'file' to create, edit and delete files, 'command' to execute shell commands and many more. For an overview of modules we can use, see: https://docs.ansible.com/ansible/latest/list_of_all_modules.html
 
@@ -27,4 +35,29 @@ x.x.x.x <- replace this line with your terraform provisioned ip from step 2
 ```
 Remember to save and close the file.
 
-6. We will now run ansible with our created configuration: `ansible-playbook -i inventory.ini nginx.yaml`
+6. We will now run ansible with our created configuration: `ansible-playbook -i inventory.ini -e 'host_key_checking=False' nginx.yaml`
+
+7. When the command has completed successfully, our machine is now running a webserver with the default welcome page. Try visiting the address of your machine in your browser. Is it working?
+
+8. You won't be able to get any web traffic from the machine, because Google Cloud's default firewall is preventing access over port 80. Let's go back to our Terraform and add an exception. cd to the directory containing your `instance.tf`, and open the file for editing. Add the following at the top:
+```yaml
+resource "google_compute_firewall" "default" {
+  name          = "webserver-firewall"
+  network       = "projects/resops-taster/regions/europe-west1/networks/default"
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags   = ["change_this"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+}
+```
+Note that the ordering in the Terraform file does not matter. We describe a desired state, not a sequence of commands.
+
+9. Now that you've updated your terraform, run `terraform apply` again and type 'yes' when prompted. Note that terraform leaves your instance in place and merely adds a firewall rule to the current setup. This is powerful when making iterative changes to large sets of infrastructure.
+
+10. With the new firewall rule in place, type your created instance IP into your browser's address bar. This should give you the nginx welcome page. Congratulations, you've deployed a webserver without ever ssh'ing into it. You are now ready to start working at scale in the cloud ;)
+
+This concludes practical 2.
