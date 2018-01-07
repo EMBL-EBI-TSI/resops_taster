@@ -5,7 +5,7 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 
 1. Log into your instance using the guide here: 
 
-2. Your environment has been set up so that Terraform is already installed. Test this by running `terraform -v`. If you get ‘command not found’ for either of these, contact your friendly course guides for help before continuing.
+2. Your environment has been set up so that Terraform is already installed. Test this by running `terraform -v`. If you get ‘command not found’, contact your friendly course guides for help before continuing.
 
 3. Create a folder called ‘practical1’ (`mkdir practical1`) and cd into it.
 
@@ -54,7 +54,7 @@ resource "google_compute_instance" "default" {
 }
 ```
 
-7. Save the file and exit. Then run `terraform init` to initalize the Google Cloud plugin for terraform, then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created. Login to the Google Cloud Console (console.cloud.google.com) to see for yourself; Click the 'hamburger' menu top left -> Compute Engine -> VM instances.
+7. Save the file and exit. Then run `terraform init` to initalize the Google Cloud plugin for terraform, then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created.
 
 8. So now we can connect to it with ssh. Find the ip of your new machine using ‘terraform show’ and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
 
@@ -76,7 +76,6 @@ variable "name" {
 
 Save and exit, and run ‘terraform apply’. You will be asked to enter a name, and your machine will be modified to include the new name. You can use variables for all sorts of things that would need to be changed on a per-deployment basis, such as ip-addresses, passwords, file inputs, etc. 
 
-11. Lastly, we need to tear down our infrastructure again. Run ‘terraform destroy’
-Type ‘yes’ to confirm. Terraform will now destroy your VM. Please don’t leave your machine running, so we can save resources as much as possible.
+11. Lastly, we need to tear down our infrastructure again. Run ‘terraform destroy’. Type ‘yes’ to confirm. You will be asked for the name variable again, but you don't have to enter anything. Terraform will now destroy your VM. Please don’t leave your machine running, so we can save resources as much as possible.
 
 This concludes the first practical.
