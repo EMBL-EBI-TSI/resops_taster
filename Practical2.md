@@ -1,9 +1,9 @@
 # Practical 2
-## Configuring a new machine with ansible
+## Configuring a new machine with Ansible
 
-1. First login to your demo machine using the guide here: . After logging in, check to see that terraform and ansible are installed with `terraform -v` and `ansible --version`. If you get `command not found` for any of these please ask your friendly course guide for help.
+1. First login to your demo machine using the guide here: . After logging in, check to see that terraform and ansible are installed with `terraform -v` and `ansible --version`. If you get `command not found` for either of these please ask your friendly course guide for help.
 
-2. If the machine from your previous practical is still up, good, we will use it again in this practical. If not, run `terraform apply` in the directory containing your `instance.tf` file and wait for it to complete. Make a note of your instance's IP address (as presented by `terraform show` under the `network_interface.0.access_config.0.nat_ip` variable).
+2. If the machine from your previous practical is still up, we will use it again in this practical. If not, run `terraform apply` in the directory containing your `instance.tf` file and wait for it to complete. Make a note of your instance's IP address (as presented by `terraform show` under the `network_interface.0.access_config.0.nat_ip` variable).
 
 3. In practical 1, we installed an nginx server by ssh'ing into our machine and running the install command manually. This does not scale well of course so in this practical we will use Ansible to do the same thing. Please make sure you are again working from your home directory for this practical (`cd ~`).
 
