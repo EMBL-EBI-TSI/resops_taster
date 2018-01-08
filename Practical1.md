@@ -3,7 +3,7 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 # Practical 1
 ## Deploying a virtual machine with Terraform
 
-1. Log into your instance using the guide here: 
+1. Log into your instance using the guide here: https://goo.gl/Yx27bK
 
 2. Your environment has been set up so that Terraform is already installed. Test this by running `terraform -v`. If you get ‘command not found’, contact your friendly course guides for help before continuing.
 
