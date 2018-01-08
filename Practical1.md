@@ -56,9 +56,9 @@ resource "google_compute_instance" "default" {
 
 7. Save the file and exit. Then run `terraform init` to initalize the Google Cloud plugin for terraform, then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created.
 
-8. So now we can connect to it with ssh. Find the ip of your new machine using ‘terraform show’ and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
+8. So now we can connect to it with ssh. Find the ip of your new machine using `terraform show` and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
 
-9. You should now be in your new machine, try and install for example an nginx server with ‘sudo yum install epel-release && sudo yum install nginx’ (optional). Exit to your deployment vm (after you are done playing around) by typing ‘exit’ or pressing Ctrl-D.
+9. You should now be in your new machine, try and install for example an nginx server with `sudo yum install nginx` (optional, more on this later). Exit to your deployment vm (after you are done playing around) by typing ‘exit’ or pressing Ctrl-D.
 
 10. To make our terraform setup easily customizable, we can use variables to change things on a per-deployment basis. Open the instance.tf file and change the ‘name’ line of your VM instance to be as follows: 
 
