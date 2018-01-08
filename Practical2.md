@@ -42,6 +42,7 @@ Remember to save and close the file.
 8. You won't be able to get any web traffic from the machine, because Google Cloud's default firewall is preventing access over port 80. Let's go back to our Terraform and add an exception. Open your `instance.tf` file for editing again and add the following at the top:
 ```yaml
 resource "google_compute_firewall" "default" {
+  # Change this to something personal to prevent conflicts
   name          = "webserver-firewall"
   network       = "projects/resops-taster/regions/europe-west1/networks/default"
   source_ranges = ["0.0.0.0/0"]
