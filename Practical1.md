@@ -63,7 +63,7 @@ resource "google_compute_instance" "default" {
 10. To make our terraform setup easily customizable, we can use variables to change things on a per-deployment basis. Open the instance.tf file and change the ‘name’ line of your VM instance to be as follows: 
 
 ```HCL
-name = "${var.name}_machine"
+name = "${var.name}-machine"
 ```
 
 Then, at the end of your file, add the definition of this variable:
