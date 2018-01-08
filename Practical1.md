@@ -24,7 +24,7 @@ provider "google" {
 6. Next we'll define our basic vm instance:
 ```HCL
 resource "google_compute_instance" "default" {
-  # Change this to something more interesting
+  # Change this to something interesting to prevent conflicts
   name         = "testmachine"
   
   machine_type = "n1-standard-1"
