@@ -37,7 +37,7 @@ Remember to save and close the file.
 
 6. We will now run ansible with our created configuration: `ansible-playbook -i inventory.ini -e 'host_key_checking=False' nginx.yaml`
 
-7. When the command has completed successfully, our machine is now running a webserver with the default welcome page. Try visiting the IP address of your machine in your browser. Is it working?
+7. When the command has completed successfully, our machine is now running a webserver with the default welcome page. Try visiting the IP address of your Terraform-created machine in your browser. Is it working?
 
 8. You won't be able to get any web traffic from the machine, because Google Cloud's default firewall is preventing access over port 80. Let's go back to our Terraform and add an exception. Open your `instance.tf` file for editing again and add the following at the top:
 ```yaml
