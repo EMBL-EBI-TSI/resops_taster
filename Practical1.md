@@ -7,7 +7,7 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 
 2. Your environment has been set up so that Terraform is already installed. Test this by running `terraform -v`. If you get ‘command not found’, contact your friendly course guides for help before continuing.
 
-3. Create a folder called ‘practical1’ (`mkdir practical1`) and cd into it.
+3. Make sure you are in your home directory (`cd ~`)
 
 4. We’ll create a basic terraform file that boots a single server and allows us to SSH in. Create a file called ‘instance.tf’ and open it in your favorite editor. (You may need to install it, e.g. `sudo yum install vim/nano/emacs`)
 
