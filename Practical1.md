@@ -7,7 +7,7 @@ GitHub repository hosting the practicals code: https://github.com/EMBL-EBI-TSI/r
 
 2. Your environment has been set up so that Terraform is already installed. Test this by running `terraform -v`. If you get ‘command not found’, contact your friendly course guides for help before continuing.
 
-3. Create a folder called ‘practical1’ (`mkdir practical1`) and cd into it.
+3. Make sure you are in your home directory (`cd ~`)
 
 4. We’ll create a basic terraform file that boots a single server and allows us to SSH in. Create a file called ‘instance.tf’ and open it in your favorite editor. (You may need to install it, e.g. `sudo yum install vim/nano/emacs`)
 
@@ -24,7 +24,7 @@ provider "google" {
 6. Next we'll define our basic vm instance:
 ```HCL
 resource "google_compute_instance" "default" {
-  # Change this to something more interesting
+  # Change this to something interesting to prevent conflicts
   name         = "testmachine"
   
   machine_type = "n1-standard-1"
@@ -56,9 +56,9 @@ resource "google_compute_instance" "default" {
 
 7. Save the file and exit. Then run `terraform init` to initalize the Google Cloud plugin for terraform, then run `terraform apply`. Some basic output will scroll by and finally your machine will have been created.
 
-8. So now we can connect to it with ssh. Find the ip of your new machine using ‘terraform show’ and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
+8. So now we can connect to it with ssh. Find the ip of your new machine using `terraform show` and find the value for `network_interface.0.access_config.0.nat_ip`. Then ssh to it: `ssh xx.xx.xx.xx`. 
 
-9. You should now be in your new machine, try and install for example an nginx server with ‘sudo yum install epel-release && sudo yum install nginx’ (optional). Exit to your deployment vm (after you are done playing around) by typing ‘exit’ or pressing Ctrl-D.
+9. You should now be in your new machine, try and install for example an nginx server with `sudo yum install nginx` (optional, more on this later). Exit to your deployment vm (after you are done playing around) by typing ‘exit’ or pressing Ctrl-D.
 
 10. To make our terraform setup easily customizable, we can use variables to change things on a per-deployment basis. Open the instance.tf file and change the ‘name’ line of your VM instance to be as follows: 
 
